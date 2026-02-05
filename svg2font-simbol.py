@@ -391,7 +391,7 @@ def show_font_info(ttf_file):
 if __name__ == "__main__":
     # Установите правильные пути
     svg_dir = "./icons"  # Папка с SVG
-    output_name = "myfont"  # Имя шрифта (без расширения)
+    output_name = "ProTo"  # Имя шрифта (без расширения)
 
     # Проверяем аргументы командной строки
     if len(sys.argv) > 1:
