@@ -1,7 +1,8 @@
-/* Custom Icon Font - Generated ProTo */
+/* ProTo Icon Font */
 @font-face {
     font-family: 'ProTo';
-    src: url('ProTo.ttf') format('truetype');
+    src: url('ProTo.woff2') format('woff2'),
+         url('ProTo.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -20,104 +21,108 @@
     display: inline-block;
 }
 
-/* Individual icon classes */
-.max:before {
+/* Icon classes */
+
+.icon-max:before {
     content: "M";
 }
 
-.vk:before {
+.icon-vk:before {
     content: "V";
 }
 
-.telegram:before {
+.icon-telegram:before {
     content: "T";
 }
 
-.ok:before {
+.icon-ok:before {
     content: "O";
 }
 
-.rutube:before {
+.icon-rutube:before {
     content: "R";
 }
 
-.youtube:before {
+.icon-youtube:before {
     content: "Y";
 }
 
-.instagram:before {
+.icon-instagram:before {
     content: "I";
 }
 
-.facebook:before {
+.icon-facebook:before {
     content: "F";
 }
 
-.find:before {
+.icon-find:before {
     content: "f";
 }
 
-.link:before {
+.icon-link:before {
     content: "u";
 }
 
-.map:before {
+.icon-map:before {
     content: "l";
 }
 
-.mail:before {
+.icon-mail:before {
     content: "m";
 }
 
-.close:before {
+.icon-close:before {
     content: "+";
 }
 
-.phone-fax:before {
+.icon-phone-fax:before {
     content: "*";
 }
 
-.phone:before {
+.icon-phone:before {
     content: "t";
 }
 
-.file-word:before {
-    content: "w";
+.icon-people:before {
+    content: "P";
 }
 
-.play:before {
+.icon-play:before {
     content: "v";
 }
 
-.rub:before {
+.icon-rub:before {
     content: "r";
 }
 
-.arrow-up:before {
+.icon-arrow-up:before {
     content: ">";
 }
 
-.arrow-dn:before {
+.icon-arrow-dn:before {
     content: "<";
 }
 
-.arrow-right:before {
+.icon-arrow-right:before {
     content: "}";
 }
 
-.file-pdf:before {
+.icon-file-word:before {
+    content: "w";
+}
+
+.icon-file-pdf:before {
     content: "p";
 }
 
-.file:before {
-    content: "D";
+.icon-file:before {
+    content: "d";
 }
 
-.file-xl:before {
+.icon-file-xl:before {
     content: "x";
 }
 
-.file-zip:before {
+.icon-file-zip:before {
     content: "z";
 }
-

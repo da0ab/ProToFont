@@ -1,10 +1,32 @@
-# ProToFont -  svg`s2ttf
+# ProTo Icon Font Generator
 
-### Debian/Ubuntu
+Генератор иконочных шрифтов из SVG файлов. Создает шрифт в форматах WOFF и WOFF2 с готовым CSS и HTML демо.
+
+##  Возможности
+
+- Автоматическое создание шрифта из SVG иконок
+- Конвертация в современные веб-форматы (WOFF, WOFF2)
+- Генерация CSS файла с классами для каждой иконки
+- Создание HTML демо-страницы для предпросмотра
+- Автоматическое удаление временных TTF файлов
+- Поддержка Unicode символов через маппинг
+
+##  Требуемое ПО
+
+### Обязательное
 ``
-sudo apt install fontforge python3-fontforge woff2
+sudo apt install fontforge python3-fontforge sfnt2woff-zopfli woff2
 ``
 
-``
-pip3 install fonttools brotli
-``
+### Структура проекта
+```
+проект/
+├── icons/                    
+│   ├── max.svg
+│   ├── vk.svg
+│   ├── telegram.svg
+│   └── ...
+├── proto_font.py            
+└── README.md                 
+
+```
