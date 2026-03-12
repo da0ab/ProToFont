@@ -1,128 +1,174 @@
-/* ProTo Icon Font */
+
 @font-face {
     font-family: 'ProTo';
     src: url('ProTo.woff2') format('woff2'),
          url('ProTo.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
 }
 
-.icon {
-    font-family: 'ProTo' !important;
-    speak: never;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
+.icons *:before, .icons *:after,.icon *:before, .icon *:after {
+    font-family: ProTo;
     text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-variant: normal;
+    font-weight: normal;
+    font-style: normal;
+    margin-right: .2em;
+    overflow-wrap: anywhere;
+    text-decoration: none;
     display: inline-block;
-}
+  }
 
-/* Icon classes */
-
-.icon-max:before {
-    content: "M";
-}
-
-.icon-vk:before {
-    content: "V";
-}
-
-.icon-telegram:before {
-    content: "T";
-}
-
-.icon-ok:before {
-    content: "O";
-}
-
-.icon-rutube:before {
-    content: "R";
-}
-
-.icon-youtube:before {
-    content: "Y";
-}
-
-.icon-instagram:before {
-    content: "I";
-}
-
-.icon-facebook:before {
-    content: "F";
-}
-
-.icon-find:before {
-    content: "f";
-}
-
-.icon-link:before {
-    content: "u";
-}
-
-.icon-map:before {
-    content: "l";
-}
-
-.icon-mail:before {
-    content: "m";
-}
-
-.icon-close:before {
-    content: "+";
-}
-
-.icon-phone-fax:before {
-    content: "*";
-}
-
-.icon-phone:before {
-    content: "t";
-}
-
-.icon-people:before {
-    content: "P";
-}
-
-.icon-play:before {
-    content: "v";
-}
-
-.icon-rub:before {
-    content: "r";
-}
-
-.icon-arrow-up:before {
-    content: ">";
-}
-
-.icon-arrow-dn:before {
-    content: "<";
-}
-
-.icon-arrow-right:before {
-    content: "}";
-}
-
-.icon-file-word:before {
-    content: "w";
-}
-
-.icon-file-pdf:before {
+  a:is([href*="https://youtube.com"], [href*="https://youtu.be"]):before {
+    content: 'Y';
+    color: #B02C27;
+  }
+  a:is([href*="https://vk.com"], [href*="https://vk.ru"], [href*="https://vkvideo.ru"]):before {
+    content:'V';
+    color:#4C75A3;
+  }
+  a[href*="https://rutube.ru"]:before {
+    content:'R';
+    color:#0b253c;
+  }
+  a[href*="https://max.ru"]:before {
+    content:'M';
+    color:#5f80f5;
+  }
+  a[href*="https://t.me"]:before {
+    content:'T';
+    color: #23a0dc;
+  }
+  a[href*="https://ok.ru"]:before {
+    content:'O';
+    color: #ee8208;
+  }
+  a[href*="https://wa.me"]:before {
+    content: '(';
+    color: #23ce47;
+  }
+  a[href*="viber:"]:before {
+    content: ')';
+    color: #793baa;
+  }
+  a[href$=".pdf"]:before {
     content: "p";
-}
-
-.icon-file:before {
-    content: "d";
-}
-
-.icon-file-xl:before {
+    color: red;
+  }
+  a:is([href$=".doc"], [href$=".docx"]):before {
+    content: "w";
+    color: #1962b3;
+  }
+  a:is([href$=".xls"], [href$=".xlsx"]):before {
     content: "x";
-}
-
-.icon-file-zip:before {
+    color: #0f8a42;
+  }
+  a:is([href$=".zip"],[href$=".rar"], [href$=".7zip"]):before {
     content: "z";
-}
+  }
+  a[href^="mailto:"]:before {
+    content: "m";
+  }
+  a[href^="tel:"]:before {
+    content: "t";
+  }
+  a:is([href^="mailto:"], [href^="tel:"]) {
+    white-space: nowrap;
+    max-width: 99%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+  .fax:before {
+    content: '*' !important;
+    margin-right: 4px !important;
+  }
+  .text:before {
+    content: 'D' !important;
+  }
+   a.link:after, .links a:after {
+    content: 'u' !important;
+    margin-left: 4px !important;
+    color: #a2a2a2;
+  }
+  .people:before {
+    content: 'P' !important;
+  }
+  .location:before {
+    content: "l";
+  }
+  .rub:after {
+    content: "r"; 
+  }
+  .icon .find:before  {
+    content: "f";
+  }
+  .top:before  {
+    content: "<";
+  }
+   .bottom:before  {
+    content: ">";
+  }
+  .plus:before  {
+    content: "+";
+  }
+  .no-icon a:after, a.no-icon:after, .no-icon a:before, a.no-icon:before, .no-icon:after, .no-icon:before {
+    content: none !important;
+  }
+  @media (max-width: 769px) {
+    a:is([href$=".zip"], [href$=".rar"],[href$=".7zip"],[href$=".xls"], [href$=".xlsx"], [href$=".pdf"], [href$=".doc"], [href$=".docx"], .location, .link) {
+      overflow: hidden;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -30,3 +30,19 @@ sudo apt install fontforge python3-fontforge sfnt2woff-zopfli woff2
 └── README.md                 
 
 ```
+
+### Активируйте виртуальное окружение
+``
+source /home/da0ab/.venv/bin/activate
+``
+
+### Создайте файл .pth в site-packages
+``
+cd /home/da0ab/.venv/lib/python3.11/site-packages/
+echo "/usr/lib/python3/dist-packages" > fontforge.pth
+``
+
+### Проверьте
+``
+python3 -c "import fontforge; print('OK')"
+``

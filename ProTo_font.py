@@ -337,30 +337,128 @@ def create_font_with_mapping(svg_dir, output_base, mapping, woff_converter, woff
 def create_css_file(output_base, created_glyphs):
     """Создание CSS файла"""
     
-    css_content = f"""/* ProTo Icon Font */
+    css_content = f"""
 @font-face {{
     font-family: 'ProTo';
     src: url('{output_base}.woff2') format('woff2'),
          url('{output_base}.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
 }}
 
-.icon {{
-    font-family: 'ProTo' !important;
-    speak: never;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
+.icons *:before, .icons *:after,.icon *:before, .icon *:after {{
+    font-family: ProTo;
     text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-variant: normal;
+    font-weight: normal;
+    font-style: normal;
+    margin-right: .2em;
+    overflow-wrap: anywhere;
+    text-decoration: none;
     display: inline-block;
-}}
+  }}
 
-/* Icon classes */
+  a:is([href*="https://youtube.com"], [href*="https://youtu.be"]):before {{
+    content: 'Y';
+    color: #B02C27;
+  }}
+  a:is([href*="https://vk.com"], [href*="https://vk.ru"], [href*="https://vkvideo.ru"]):before {{
+    content:'V';
+    color:#4C75A3;
+  }}
+  a[href*="https://rutube.ru"]:before {{
+    content:'R';
+    color:#0b253c;
+  }}
+  a[href*="https://max.ru"]:before {{
+    content:'M';
+    color:#5f80f5;
+  }}
+  a[href*="https://t.me"]:before {{
+    content:'T';
+    color: #23a0dc;
+  }}
+  a[href*="https://ok.ru"]:before {{
+    content:'O';
+    color: #ee8208;
+  }}
+  a[href*="https://wa.me"]:before {{
+    content: '(';
+    color: #23ce47;
+  }}
+  a[href*="viber:"]:before {{
+    content: ')';
+    color: #793baa;
+  }}
+  a[href$=".pdf"]:before {{
+    content: "p";
+    color: red;
+  }}
+  a:is([href$=".doc"], [href$=".docx"]):before {{
+    content: "w";
+    color: #1962b3;
+  }}
+  a:is([href$=".xls"], [href$=".xlsx"]):before {{
+    content: "x";
+    color: #0f8a42;
+  }}
+  a:is([href$=".zip"],[href$=".rar"], [href$=".7zip"]):before {{
+    content: "z";
+  }}
+  a[href^="mailto:"]:before {{
+    content: "m";
+  }}
+  a[href^="tel:"]:before {{
+    content: "t";
+  }}
+  a:is([href^="mailto:"], [href^="tel:"]) {{
+    white-space: nowrap;
+    max-width: 99%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }}
+  .fax:before {{
+    content: '*' !important;
+    margin-right: 4px !important;
+  }}
+  .text:before {{
+    content: 'D' !important;
+  }}
+   a.link:after, .links a:after {{
+    content: 'u' !important;
+    margin-left: 4px !important;
+    color: #a2a2a2;
+  }}
+  .people:before {{
+    content: 'P' !important;
+  }}
+  .location:before {{
+    content: "l";
+  }}
+  .rub:after {{
+    content: "r"; 
+  }}
+  .icon .find:before  {{
+    content: "f";
+  }}
+  .top:before  {{
+    content: "<";
+  }}
+   .bottom:before  {{
+    content: ">";
+  }}
+  .plus:before  {{
+    content: "+";
+  }}
+  .no-icon a:after, a.no-icon:after, .no-icon a:before, a.no-icon:before, .no-icon:after, .no-icon:before {{
+    content: none !important;
+  }}
+  @media (max-width: 769px) {{
+    a:is([href$=".zip"], [href$=".rar"],[href$=".7zip"],[href$=".xls"], [href$=".xlsx"], [href$=".pdf"], [href$=".doc"], [href$=".docx"], .location, .link) {{
+      overflow: hidden;
+    }}
+  }}
+
+
 """
 
     for char, svg_file in created_glyphs.items():
@@ -368,9 +466,7 @@ def create_css_file(output_base, created_glyphs):
         class_name = ''.join(c for c in class_name if c.isalnum() or c == '-')
         
         css_content += f"""
-.icon-{class_name}:before {{
-    content: "{char}";
-}}
+
 """
 
     css_file = f"{output_base}.css"
@@ -381,7 +477,19 @@ def create_css_file(output_base, created_glyphs):
 
 def create_html_demo(output_base, created_glyphs):
     """Создание HTML демо"""
-    
+   
+
+    # Генерируем классы для иконок прямо здесь
+    icon_classes = ""
+    for char, svg_file in created_glyphs.items():
+        class_name = os.path.splitext(svg_file)[0].lower()
+        class_name = ''.join(c for c in class_name if c.isalnum() or c == '-')
+        
+        icon_classes += f"""
+        .{class_name}:before {{
+            content: "{char}";
+        }}"""
+
     html_content = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -400,6 +508,11 @@ def create_html_demo(output_base, created_glyphs):
         .card .char {{ font-family: monospace; background: #f0f0f0; padding: 4px; border-radius: 4px; font-size: 12px; }}
         .test-area {{ margin-top: 40px; padding: 20px; background: #e3f2fd; border-radius: 8px; }}
         .test-input {{ width: 100%%; padding: 10px; font-size: 24px; font-family: 'ProTo'; margin-top: 10px; }}
+                /* Icon classes */
+        {icon_classes}
+        .rub:before {{
+        content: none
+        }}
     </style>
 </head>
 <body>
@@ -407,7 +520,7 @@ def create_html_demo(output_base, created_glyphs):
         <h1>ProTo Icon Font</h1>
         <p>Всего иконок: {len(created_glyphs)}</p>
         
-        <div class="grid">
+        <div class="grid icons">
 """
 
     for char, svg_file in created_glyphs.items():
@@ -416,7 +529,7 @@ def create_html_demo(output_base, created_glyphs):
         
         html_content += f"""
             <div class="card">
-                <div class="icon icon-{class_name}"></div>
+                <div class="icon {class_name}"></div>
                 <div class="label">{class_name}</div>
                 <div class="char">'{char}' (U+{ord(char):04X})</div>
             </div>"""
@@ -430,7 +543,51 @@ def create_html_demo(output_base, created_glyphs):
                    placeholder="Введите символы (V, T, M...)">
             <div style="margin-top: 20px; font-size: 48px; font-family: 'ProTo';" id="testOutput">VTMOR</div>
         </div>
-        
+       
+
+
+        <p class="letters" style="font-family: 'ProTo'; font-weight: normal; font-style: normal; font-size: 20px">
+        абвгдеёжзийклмнопрстуфхцчшщъыьэюя<br>
+        АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ<br>
+        abcdefghijklmnopqrstuvwxyz<br>
+        ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+        0123456789.:,;()*!?'@#/<>$%&^+-=~
+        </p>
+<p><strong>Class для обертки icons<br>
+class для одиночной иконки icon</strong></p>
+<p><strong>Иконки по url</strong></p>
+        <ul class="icons grid">
+            <li><a href="https://max.ru/" target="_blank" title="max">max.ru</a></li>
+            <li><a href="https://vk.com/" target="_blank" title="VK">vk.com</a></li>
+            <li><a href="https://vk.ru/" target="_blank" title="VK">vk.ru</a></li>
+            <li><a href="https://vkvideo.ru/" target="_blank" title="VKvideo">VKvideo</a></li>
+            <li><a href="https://ok.ru/" target="_blank" title="Одноклассники">Одноклассники</a></li>
+            <li><a href="https://youtube.com/" target="_blank" title="YouTube">YouTube</a></li>
+            <li><a href="https://t.me/" target="_blank" title="Telegram">Telegram</a></li>
+            <li><a href="mailto:business@inno.mgimo.ru">business@inno.mgimo.ru</a></li>
+            <li><a href="tel:+74952254088">+7 495 225-40-88</a></li>
+            
+            <li><a href=".pdf">Ссылка на pdf</a></li>
+            <li><a href=".doc">Ссылка на doc, docx</a></li>
+            <li><a href=".xls">Ссылка на xls, xlsx</a></li>
+            <li><a href=".zip">Ссылка на zip, rar, 7zip</a></li>
+            </ul>
+            <p><strong>С добавлением класса</strong></p>
+            <ul class="icons grid">
+            <li><a class="fax" href="tel:+74952254088">+7 495 225-40-88</a> fax</li>
+            <li><a class="link" href="http://ya.ru" rel="nofollow" target="_blank">внешняя ссылка link для обертки links</a></li>
+            <li><a class="location" href="">location</a></li>
+            <li class="people">people</li>
+            <li><span class="rub">100</span> rub</li>
+            <li><span class="find">find </span></li>
+            <li><span class="top"> top </span></li>
+            <li><span class="bottom"> bottom </span></li>
+            <li><span class="plus"> plus </span></li>
+        </ul>
+ 
+
+
+
         <script>
             document.getElementById('testInput').addEventListener('input', function(e) {{
                 document.getElementById('testOutput').textContent = e.target.value;
