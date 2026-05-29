@@ -72,6 +72,12 @@
         .rub:before {
             content: "r";
         }
+        .time:before {
+            content: "i";
+        }
+        .lang:before {
+            content: "e";
+        }
         .arrow-up:before {
             content: ">";
         }
@@ -104,8 +110,8 @@
 <body>
     <div class="container">
         <h1>ProTo Icon Font</h1>
-        <p>Всего иконок: 26</p>
-        
+        <p>Всего иконок: 28</p>
+
         <div class="grid icons">
 
             <div class="card">
@@ -199,6 +205,16 @@
                 <div class="char">'r' (U+0072)</div>
             </div>
             <div class="card">
+                <div class="icon time"></div>
+                <div class="label">time</div>
+                <div class="char">'i' (U+0069)</div>
+            </div>
+            <div class="card">
+                <div class="icon lang"></div>
+                <div class="label">lang</div>
+                <div class="char">'e' (U+0065)</div>
+            </div>
+            <div class="card">
                 <div class="icon arrow-up"></div>
                 <div class="label">arrow-up</div>
                 <div class="char">'>' (U+003E)</div>
@@ -239,14 +255,14 @@
                 <div class="char">'z' (U+007A)</div>
             </div>
         </div>
-        
+
         <div class="test-area">
             <h3>Тестовая область</h3>
-            <input type="text" class="test-input" id="testInput" value="VTMOR" 
+            <input type="text" class="test-input" id="testInput" value="VTMOR"
                    placeholder="Введите символы (V, T, M...)">
             <div style="margin-top: 20px; font-size: 48px; font-family: 'ProTo';" id="testOutput">VTMOR</div>
         </div>
-       
+
 
 
         <p class="letters" style="font-family: 'ProTo'; font-weight: normal; font-style: normal; font-size: 20px">
@@ -269,7 +285,7 @@ class для одиночной иконки icon</strong></p>
             <li><a href="https://t.me/" target="_blank" title="Telegram">Telegram</a></li>
             <li><a href="mailto:business@inno.mgimo.ru">business@inno.mgimo.ru</a></li>
             <li><a href="tel:+74952254088">+7 495 225-40-88</a></li>
-            
+
             <li><a href=".pdf">Ссылка на pdf</a></li>
             <li><a href=".doc">Ссылка на doc, docx</a></li>
             <li><a href=".xls">Ссылка на xls, xlsx</a></li>
@@ -286,8 +302,9 @@ class для одиночной иконки icon</strong></p>
             <li><span class="top"> top </span></li>
             <li><span class="bottom"> bottom </span></li>
             <li><span class="plus"> plus </span></li>
+            <li><span class="time"> time </span></li>
         </ul>
- 
+
 
 
 

@@ -89,14 +89,20 @@
     margin-left: 4px !important;
     color: #a2a2a2;
   }
+   a.link:before, .links a:before {
+    content: none;
+  }
   .people:before {
     content: 'P' !important;
   }
   .location:before {
     content: "l";
   }
+  .time:before {
+    content: "i";
+  }
   .rub:after {
-    content: "r"; 
+    content: "r";
   }
   .icon .find:before  {
     content: "f";
@@ -118,6 +124,10 @@
       overflow: hidden;
     }
   }
+
+
+
+
 
 
 

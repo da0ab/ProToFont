@@ -26,12 +26,14 @@ icon_mapping = {
     'P': 'people.svg',
     'v': 'play.svg',
     'r': 'rub.svg',
+    'i': 'time.svg',
+    'e': 'lang.svg',
     # стрелки
     '>': 'arrow-up.svg',
     '<': 'arrow-dn.svg',
     '}': 'arrow-right.svg',
     # файлы
-    'w': 'file-word.svg',  
+    'w': 'file-word.svg',
     'p': 'file-pdf.svg',
     'd': 'file.svg',
     'x': 'file-xl.svg',
@@ -40,7 +42,7 @@ icon_mapping = {
 
 def find_woff_converter():
     """Ищет доступные утилиты для конвертации в WOFF"""
-    
+
     # Различные возможные имена утилит
     woff_converters = [
         'sfnt2woff-zopfli',
@@ -48,7 +50,7 @@ def find_woff_converter():
         'woff2sfnt',
         'woff-utils'
     ]
-    
+
     for util in woff_converters:
         try:
             # Проверяем существование утилиты
@@ -58,7 +60,7 @@ def find_woff_converter():
                 return util
         except:
             continue
-    
+
     # Дополнительная проверка через whereis
     try:
         result = subprocess.run(['whereis', 'sfnt2woff'], capture_output=True, text=True)
@@ -68,18 +70,18 @@ def find_woff_converter():
             return path
     except:
         pass
-    
+
     return None
 
 def find_woff2_converter():
     """Ищет доступные утилиты для конвертации в WOFF2"""
-    
+
     woff2_converters = [
         'woff2_compress',
         'woff2',
         'google-woff2'
     ]
-    
+
     for util in woff2_converters:
         try:
             result = subprocess.run(['which', util], capture_output=True, text=True)
@@ -88,15 +90,15 @@ def find_woff2_converter():
                 return util
         except:
             continue
-    
+
     return None
 
 def check_dependencies():
     """Проверяет наличие необходимых утилит"""
     print("\n🔍 Проверка зависимостей...")
-    
+
     dependencies_ok = True
-    
+
     # Проверяем FontForge
     try:
         import fontforge
@@ -105,41 +107,41 @@ def check_dependencies():
         print("❌ FontForge Python модуль не найден!")
         print("  Установите: sudo apt install fontforge python3-fontforge")
         dependencies_ok = False
-    
+
     # Проверяем наличие WOFF конвертера
     woff_converter = find_woff_converter()
     if not woff_converter:
         print("⚠ Не найден конвертер для WOFF")
         print("  Будет создан только WOFF2 (если доступен)")
-    
+
     # Проверяем наличие WOFF2 конвертера
     woff2_converter = find_woff2_converter()
     if not woff2_converter:
         print("⚠ Не найден конвертер для WOFF2")
         print("  Будет создан только WOFF (если доступен)")
-    
+
     if not woff_converter and not woff2_converter:
         print("❌ Не найдено ни одной утилиты для конвертации!")
         print("  Установите утилиты:")
         print("  sudo apt install woff2 sfnt2woff-zopfli")
         dependencies_ok = False
-    
+
     return dependencies_ok, woff_converter, woff2_converter
 
 def convert_to_woff(ttf_file, output_base, woff_converter):
     """Конвертация TTF в WOFF"""
-    
+
     woff_file = f"{output_base}.woff"
-    
+
     if not woff_converter:
         return False
-    
+
     try:
         if 'sfnt2woff' in woff_converter:
             # Для sfnt2woff и sfnt2woff-zopfli
             cmd = [woff_converter, ttf_file]
             result = subprocess.run(cmd, check=True, capture_output=True, text=True)
-            
+
             # Проверяем созданный файл
             generated = f"{os.path.splitext(ttf_file)[0]}.woff"
             if os.path.exists(generated):
@@ -151,28 +153,28 @@ def convert_to_woff(ttf_file, output_base, woff_converter):
         else:
             # Альтернативные методы
             print(f"⚠ Неизвестный конвертер: {woff_converter}")
-            
+
     except subprocess.CalledProcessError as e:
         print(f"⚠ Ошибка конвертации WOFF: {e.stderr}")
     except Exception as e:
         print(f"⚠ Ошибка при создании WOFF: {e}")
-    
+
     return False
 
 def convert_to_woff2(ttf_file, output_base, woff2_converter):
     """Конвертация TTF в WOFF2"""
-    
+
     woff2_file = f"{output_base}.woff2"
-    
+
     if not woff2_converter:
         return False
-    
+
     try:
         if 'woff2_compress' in woff2_converter:
             # Для woff2_compress
             cmd = [woff2_converter, ttf_file]
             result = subprocess.run(cmd, check=True, capture_output=True, text=True)
-            
+
             # woff2_compress создает файл с расширением .woff2
             generated = f"{ttf_file}.woff2"
             if os.path.exists(generated):
@@ -183,27 +185,27 @@ def convert_to_woff2(ttf_file, output_base, woff2_converter):
                 return True
         else:
             print(f"⚠ Неизвестный конвертер: {woff2_converter}")
-            
+
     except subprocess.CalledProcessError as e:
         print(f"⚠ Ошибка конвертации WOFF2: {e.stderr}")
     except Exception as e:
         print(f"⚠ Ошибка при создании WOFF2: {e}")
-    
+
     return False
 
 def generate_font_files(font, output_base, created_glyphs, woff_converter, woff2_converter):
     """Генерирует файлы шрифта"""
-    
+
     print("\n=== Генерация файлов шрифта ===")
 
     # Создаем временный TTF файл
     ttf_file = f"{output_base}.ttf"
-    
+
     try:
         # Генерируем TTF
         font.generate(ttf_file)
         print(f"✓ Создан временный TTF: {ttf_file}")
-        
+
         if os.path.exists(ttf_file):
             size = os.path.getsize(ttf_file) / 1024
             print(f"  Размер TTF: {size:.1f} KB")
@@ -214,7 +216,7 @@ def generate_font_files(font, output_base, created_glyphs, woff_converter, woff2
     # Конвертируем в WOFF и WOFF2
     woff_created = convert_to_woff(ttf_file, output_base, woff_converter) if woff_converter else False
     woff2_created = convert_to_woff2(ttf_file, output_base, woff2_converter) if woff2_converter else False
-    
+
     # Удаляем временный TTF файл
     try:
         os.remove(ttf_file)
@@ -226,7 +228,7 @@ def generate_font_files(font, output_base, created_glyphs, woff_converter, woff2
 
 def create_font_with_mapping(svg_dir, output_base, mapping, woff_converter, woff2_converter):
     """Создает шрифт из SVG файлов"""
-    
+
     # Создаем новый шрифт
     font = fontforge.font()
 
@@ -261,16 +263,16 @@ def create_font_with_mapping(svg_dir, output_base, mapping, woff_converter, woff
         svg_path = os.path.join(svg_dir, svg_file)
         if not os.path.exists(svg_path):
             missing_files.append(svg_file)
-    
+
     if missing_files:
         print(f"⚠ Отсутствуют {len(missing_files)} SVG файлов:")
         for f in missing_files[:5]:
             print(f"  • {f}")
         if len(missing_files) > 5:
             print(f"  • и еще {len(missing_files) - 5}...")
-    
+
     print("\n🔨 Создание глифов:")
-    
+
     # Создаем глифы
     for char, svg_file in mapping.items():
         if len(char) != 1:
@@ -282,7 +284,7 @@ def create_font_with_mapping(svg_dir, output_base, mapping, woff_converter, woff
             continue
 
         svg_path = os.path.join(svg_dir, svg_file)
-        
+
         if not os.path.exists(svg_path):
             errors.append(f"Файл не найден: {svg_file} для символа '{char}'")
             continue
@@ -290,24 +292,24 @@ def create_font_with_mapping(svg_dir, output_base, mapping, woff_converter, woff
         try:
             unicode_val = ord(char)
             glyph = font.createChar(unicode_val)
-            
+
             # Импортируем SVG
             glyph.importOutlines(svg_path)
-            
+
             # Вычисляем ширину
             bbox = glyph.boundingBox()
             if bbox and len(bbox) >= 4:
                 glyph.width = int(bbox[2]) + 50
             else:
                 glyph.width = 600
-            
+
             # Оптимизируем
             glyph.simplify()
             glyph.round()
-            
+
             print(f"  ✓ {char} (U+{unicode_val:04X}) ← {svg_file}")
             created_glyphs[char] = svg_file
-            
+
         except Exception as e:
             errors.append(f"Ошибка импорта {svg_file}: {e}")
 
@@ -325,18 +327,18 @@ def create_font_with_mapping(svg_dir, output_base, mapping, woff_converter, woff
 
     # Генерируем файлы
     success = generate_font_files(font, output_base, created_glyphs, woff_converter, woff2_converter)
-    
+
     if success:
         # Создаем CSS и HTML
         create_css_file(output_base, created_glyphs)
         create_html_demo(output_base, created_glyphs)
         print(f"\n✅ Готово! Файлы сохранены в текущей директории")
-    
+
     return True
 
 def create_css_file(output_base, created_glyphs):
     """Создание CSS файла"""
-    
+
     css_content = f"""
 @font-face {{
     font-family: 'ProTo';
@@ -428,14 +430,20 @@ def create_css_file(output_base, created_glyphs):
     margin-left: 4px !important;
     color: #a2a2a2;
   }}
+   a.link:before, .links a:before {{
+    content: none;
+  }}
   .people:before {{
     content: 'P' !important;
   }}
   .location:before {{
     content: "l";
   }}
+  .time:before {{
+    content: "i";
+  }}
   .rub:after {{
-    content: "r"; 
+    content: "r";
   }}
   .icon .find:before  {{
     content: "f";
@@ -464,7 +472,7 @@ def create_css_file(output_base, created_glyphs):
     for char, svg_file in created_glyphs.items():
         class_name = os.path.splitext(svg_file)[0].lower()
         class_name = ''.join(c for c in class_name if c.isalnum() or c == '-')
-        
+
         css_content += f"""
 
 """
@@ -472,19 +480,19 @@ def create_css_file(output_base, created_glyphs):
     css_file = f"{output_base}.css"
     with open(css_file, "w", encoding='utf-8') as f:
         f.write(css_content)
-    
+
     print(f"✓ Создан CSS: {css_file}")
 
 def create_html_demo(output_base, created_glyphs):
     """Создание HTML демо"""
-   
+
 
     # Генерируем классы для иконок прямо здесь
     icon_classes = ""
     for char, svg_file in created_glyphs.items():
         class_name = os.path.splitext(svg_file)[0].lower()
         class_name = ''.join(c for c in class_name if c.isalnum() or c == '-')
-        
+
         icon_classes += f"""
         .{class_name}:before {{
             content: "{char}";
@@ -519,14 +527,14 @@ def create_html_demo(output_base, created_glyphs):
     <div class="container">
         <h1>ProTo Icon Font</h1>
         <p>Всего иконок: {len(created_glyphs)}</p>
-        
+
         <div class="grid icons">
 """
 
     for char, svg_file in created_glyphs.items():
         class_name = os.path.splitext(svg_file)[0].lower()
         class_name = ''.join(c for c in class_name if c.isalnum() or c == '-')
-        
+
         html_content += f"""
             <div class="card">
                 <div class="icon {class_name}"></div>
@@ -536,14 +544,14 @@ def create_html_demo(output_base, created_glyphs):
 
     html_content += f"""
         </div>
-        
+
         <div class="test-area">
             <h3>Тестовая область</h3>
-            <input type="text" class="test-input" id="testInput" value="VTMOR" 
+            <input type="text" class="test-input" id="testInput" value="VTMOR"
                    placeholder="Введите символы (V, T, M...)">
             <div style="margin-top: 20px; font-size: 48px; font-family: 'ProTo';" id="testOutput">VTMOR</div>
         </div>
-       
+
 
 
         <p class="letters" style="font-family: 'ProTo'; font-weight: normal; font-style: normal; font-size: 20px">
@@ -566,7 +574,7 @@ class для одиночной иконки icon</strong></p>
             <li><a href="https://t.me/" target="_blank" title="Telegram">Telegram</a></li>
             <li><a href="mailto:business@inno.mgimo.ru">business@inno.mgimo.ru</a></li>
             <li><a href="tel:+74952254088">+7 495 225-40-88</a></li>
-            
+
             <li><a href=".pdf">Ссылка на pdf</a></li>
             <li><a href=".doc">Ссылка на doc, docx</a></li>
             <li><a href=".xls">Ссылка на xls, xlsx</a></li>
@@ -583,8 +591,9 @@ class для одиночной иконки icon</strong></p>
             <li><span class="top"> top </span></li>
             <li><span class="bottom"> bottom </span></li>
             <li><span class="plus"> plus </span></li>
+            <li><span class="time"> time </span></li>
         </ul>
- 
+
 
 
 
@@ -600,25 +609,25 @@ class для одиночной иконки icon</strong></p>
     html_file = f"{output_base}.html"
     with open(html_file, "w", encoding='utf-8') as f:
         f.write(html_content)
-    
+
     print(f"✓ Создан HTML демо: {html_file}")
 
 def main():
     print("🔤 ProTo Icon Font Generator")
-    
+
     # Определяем директорию с SVG
     svg_dir = "icons"
     if len(sys.argv) > 1:
         svg_dir = sys.argv[1]
-    
+
     output_base = "ProTo"
-    
+
     print(f"📁 Директория с SVG: {svg_dir}")
     print(f"📦 Имя шрифта: {output_base}")
-    
+
     # Проверяем зависимости
     deps_ok, woff_converter, woff2_converter = check_dependencies()
-    
+
     if not deps_ok:
         print("\n❌ Не все зависимости установлены!")
         print("\nУстановите необходимые пакеты:")
@@ -628,7 +637,7 @@ def main():
         print("  sudo ln -s /usr/bin/woff2_compress /usr/local/bin/woff2_compress")
         print("  sudo ln -s /usr/bin/sfnt2woff-zopfli /usr/local/bin/sfnt2woff")
         return
-    
+
     # Запускаем создание шрифта
     create_font_with_mapping(svg_dir, output_base, icon_mapping, woff_converter, woff2_converter)
 
